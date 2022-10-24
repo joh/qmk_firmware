@@ -19,6 +19,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include QMK_KEYBOARD_H
 #include <stdio.h>
 
+#ifdef PS2_MOUSE_ENABLE
+#include "ps2_mouse.h"
+#include "ps2.h"
+#endif
+
 #define U_RDO KC_AGIN
 #define U_PST KC_PSTE
 #define U_CPY KC_COPY
@@ -86,7 +91,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [FUN] = LAYOUT_split_3x6_3(
         XXX,  KC_F12,            KC_F7,             KC_F8,             KC_F9,             KC_PSCR,           XXX,              XXX,              XXX,              XXX,               QK_BOOT,           XXX,
-        XXX,  KC_F11,            KC_F4,             KC_F5,             KC_F6,             KC_SLCK,           XXX,              KC_LSFT,          KC_LCTL,          KC_LGUI,           KC_LALT,         XXX,
+        XXX,  KC_F11,            KC_F4,             KC_F5,             KC_F6,             KC_SCRL,           XXX,              KC_LSFT,          KC_LCTL,          KC_LGUI,           KC_LALT,         XXX,
         XXX,  KC_F10,            KC_F1,             KC_F2,             KC_F3,             KC_PAUS,           XXX,              XXX,              XXX,              KC_ALGR,           XXX,             XXX,
                                                     KC_APP,            KC_SPC,            KC_TAB,            XXX,              XXX,              XXX
   ),
@@ -210,3 +215,25 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   return true;
 }
 #endif // OLED_ENABLE
+
+void keyboard_post_init_user(void) {
+    // Customise these values to desired behaviour
+    debug_enable=true;
+    //debug_matrix=true;
+    //debug_keyboard=true;
+    debug_mouse=true;
+}
+
+#ifdef PS2_MOUSE_ENABLE
+void ps2_mouse_init_user() {
+    // set TrackPoint sensitivity
+    PS2_MOUSE_SEND(0xE2, "tpsens: 0xE2");
+    PS2_MOUSE_SEND(0x81, "tpsens: 0x81");
+    PS2_MOUSE_SEND(0x4A, "tpsens: 0x4A");
+    PS2_MOUSE_SEND(0xA0, "tpsens: 0x59");
+
+    // force calibration
+    PS2_MOUSE_SEND(0xE2, "tpcali: 0xE2");
+    PS2_MOUSE_SEND(0x51, "tpcali: 0x51");
+}
+#endif

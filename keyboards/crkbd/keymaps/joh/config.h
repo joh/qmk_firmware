@@ -82,3 +82,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define PS2_CLOCK_PIN D0
 #define PS2_DATA_PIN  D1
+#define PS2_PIO_USE_PIO1
+#define PS2_MOUSE_ROTATE 90
+
+#define PS2_MOUSE_DEBUG_RAW
+//#define PS2_MOUSE_DEBUG_HID
