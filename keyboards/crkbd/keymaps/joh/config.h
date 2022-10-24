@@ -87,3 +87,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define PS2_MOUSE_DEBUG_RAW
 //#define PS2_MOUSE_DEBUG_HID
+
+#if defined MH_AUTO_BUTTONS
+  #define MH_AUTO_BUTTONS_LAYER MOUSE
+  #define MH_AUTO_BUTTONS_TIMEOUT 750
+#endif

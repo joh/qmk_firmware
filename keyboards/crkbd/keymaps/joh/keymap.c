@@ -237,3 +237,36 @@ void ps2_mouse_init_user() {
     PS2_MOUSE_SEND(0x51, "tpcali: 0x51");
 }
 #endif
+
+#if defined MH_AUTO_BUTTONS && defined PS2_MOUSE_ENABLE && defined MOUSEKEY_ENABLE
+
+static uint16_t mh_auto_buttons_timer;
+extern int tp_buttons; // mousekey button state set in action.c and used in ps2_mouse.c
+
+void ps2_mouse_moved_user(report_mouse_t *mouse_report) {
+  if (mh_auto_buttons_timer) {
+    mh_auto_buttons_timer = timer_read();
+  } else {
+    if (!tp_buttons) {
+      layer_on(MH_AUTO_BUTTONS_LAYER);
+      mh_auto_buttons_timer = timer_read();
+  #if defined CONSOLE_ENABLE
+      print("mh_auto_buttons: on\n");
+  #endif
+    }
+  }
+}
+
+void matrix_scan_user(void) {
+  if (mh_auto_buttons_timer && (timer_elapsed(mh_auto_buttons_timer) > MH_AUTO_BUTTONS_TIMEOUT)) {
+    if (!tp_buttons) {
+      layer_off(MH_AUTO_BUTTONS_LAYER);
+      mh_auto_buttons_timer = 0;
+  #if defined CONSOLE_ENABLE
+      print("mh_auto_buttons: off\n");
+  #endif
+    }
+  }
+}
+
+#endif // defined MH_AUTO_BUTTONS && defined PS2_MOUSE_ENABLE && #defined MOUSEKEY_ENABLE
