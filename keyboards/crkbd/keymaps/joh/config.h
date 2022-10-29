@@ -80,8 +80,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #undef LOCKING_RESYNC_ENABLE
 #define NO_ACTION_ONESHOT
 
-#define PS2_CLOCK_PIN D0
-#define PS2_DATA_PIN  D1
+#define PS2_CLOCK_PIN B5
+#define PS2_DATA_PIN  B4
 #define PS2_PIO_USE_PIO1
 #define PS2_MOUSE_ROTATE 90
 
