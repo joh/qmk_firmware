@@ -74,7 +74,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     #define RGBLIGHT_VAL_STEP 17
 #endif
 
-#define OLED_FONT_H "keyboards/crkbd/lib/glcdfont.c"
+//#define OLED_FONT_H "keyboards/crkbd/lib/glcdfont.c"
+//#define OLED_FONT_H "dpla_11834776007007.c"
+//#define OLED_FONT_H "dpla_11974770607007.c"
+//#define OLED_FONT_H "dpla_11974770607007.c"
+#define OLED_FONT_H "dpla_12114765016006.c"
+#define OLED_FONT_WIDTH 5
 
 #undef LOCKING_SUPPORT_ENABLE
 #undef LOCKING_RESYNC_ENABLE
