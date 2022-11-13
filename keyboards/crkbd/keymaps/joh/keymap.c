@@ -63,10 +63,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [MOUSE] = LAYOUT_split_3x6_3(
-        XXX,  QK_BOOT,  XXX,      XXX,      XXX,      XXX,  /***/  U_RDO,    U_PST,    U_CPY,    U_CUT,    U_UND,  XXX,
-        XXX,  KC_LALT,  KC_LGUI,  KC_LCTL,  KC_LSFT,  XXX,  /***/  KC_MS_L,  KC_MS_D,  KC_MS_U,  KC_MS_R,  XXX,    XXX,
-        XXX,  XXX,      KC_ALGR,  XXX,      XXX,      XXX,  /***/  KC_WH_L,  KC_WH_D,  KC_WH_U,  KC_WH_R,  XXX,    XXX,
-                                          XXX,  XXX,  XXX,  /***/  KC_BTN1,  KC_BTN3,  KC_BTN2
+        ___,  ___,  ___,  ___,  ___,  ___,  /***/  ___,      ___,      ___,     ___,  ___,  ___,
+        ___,  ___,  ___,  ___,  ___,  ___,  /***/  ___,      ___,      ___,     ___,  ___,  ___,
+        ___,  ___,  ___,  ___,  ___,  ___,  /***/  ___,      ___,      ___,     ___,  ___,  ___,
+                          ___,  ___,  ___,  /***/  KC_BTN1,  KC_BTN3,  KC_BTN2
   ),
 
   [MEDIA] = LAYOUT_split_3x6_3(
@@ -167,8 +167,8 @@ const char keycode_to_char(uint16_t keycode) {
         case KC_SPACE: return 22;
         case KC_MINUS: return '-';
         case KC_EQUAL: return '=';
-        case KC_LEFT_BRACKET: return ']';
-        case KC_RIGHT_BRACKET: return '[';
+        case KC_LEFT_BRACKET: return '[';
+        case KC_RIGHT_BRACKET: return ']';
         case KC_BACKSLASH: return '\\';
         case KC_NONUS_HASH: return '#';
         case KC_SEMICOLON: return ';';
@@ -398,7 +398,9 @@ void oled_render_layer_state(void) {
     if (is_keyboard_left()) {
         for (int row = 0; row <= 3; row++) {
             for (int col = 0; col < MATRIX_COLS; col++) {
-                uint16_t keycode = keymaps[layer][row][col];
+                keypos_t pos = {col, row};
+                uint8_t key_layer = layer_switch_get_layer(pos);
+                uint16_t keycode = keymaps[key_layer][row][col];
                 //bool invert = IS_TAP_HOLD(keycode);
                 bool invert = false;
                 oled_write_char(keycode_to_char(keycode), invert);
@@ -409,7 +411,9 @@ void oled_render_layer_state(void) {
     } else {
         for (int row = 4; row < MATRIX_ROWS; row++) {
             for (int col = MATRIX_COLS-1; col >= 0; col--) {
-                uint16_t keycode = keymaps[layer][row][col];
+                keypos_t pos = {col, row};
+                uint8_t key_layer = layer_switch_get_layer(pos);
+                uint16_t keycode = keymaps[key_layer][row][col];
                 //bool invert = IS_TAP_HOLD(keycode);
                 bool invert = false;
                 oled_write_char(keycode_to_char(keycode), invert);
