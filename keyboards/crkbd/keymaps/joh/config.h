@@ -78,8 +78,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //#define OLED_FONT_H "dpla_11834776007007.c"
 //#define OLED_FONT_H "dpla_11974770607007.c"
 //#define OLED_FONT_H "dpla_11974770607007.c"
-#define OLED_FONT_H "dpla_12114765016006.c"
+#define OLED_FONT_H "oled_font.c"
 #define OLED_FONT_WIDTH 5
+
+#define SPLIT_LAYER_STATE_ENABLE
+#define SPLIT_LED_STATE_ENABLE
+#define SPLIT_MODS_ENABLE
+#define SPLIT_OLED_ENABLE
 
 #undef LOCKING_SUPPORT_ENABLE
 #undef LOCKING_RESYNC_ENABLE

@@ -36,7 +36,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define LAYER_NAMES BASE, BUTTON, NAV, MOUSE, MEDIA, NUM, SYM, FUN, COMPOSE
 enum layers { LAYER_NAMES };
 const char* const layer_strings[] = {
-    "Base", "Button", "Nav", "Mouse", "Media", "Num", "Sym", "Fun", "Compose"
+    "Base", "Btn", "Nav", "Mouse", "Media", "Num", "Sym", "Fun", "Comp"
 };
 
 enum custom_keycodes {
@@ -113,61 +113,223 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 #ifdef OLED_ENABLE
-// clang-format off
-// QK_BASIC - QK_BASIC_MAX (0x0000 - 0x00FF)
-static const char PROGMEM code_to_name[256] = {
-//   0    1    2    3    4    5    6    7    8    9    A    B    C    D    E    F
-    ' ', ' ', ' ', ' ', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',  // 0x
-    'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2',  // 1x
-    '3', '4', '5', '6', '7', '8', '9', '0',  20,  19,  17,  26,  22, '-', '=', '[',  // 2x
-    ']','\\', '#', ';','\'', '`', ',', '.', '/', 127,0xD5,0xD6,0xD7,0xD8,0xD9,0xDA,  // 3x
-    0xDB,0xDC,0xDD,0xDE,0XDF,0xFB,'P', 'S',  19, 'I',  17,  30,  16,  16,  31,  26,  // 4x
-     27,  25,  24, 'N', '/', '*', '-', '+',  23, '1', '2', '3', '4', '5', '6', '7',  // 5x
-    '8', '9', '0', '.','\\', 'A',   0, '=', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',  // 6x
-    ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',  // 7x
-    ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',  // 8x
-    ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',  // 9x
-    ' ', ' ', ' ', ' ', ' ',   0, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',  // Ax
-    ' ', ' ', ' ', ' ', ' ',  18, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',  // Bx
-    ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',  24,  25,  27,  // Cx
-     26, 'L', 'R', 'M', ' ', ' ', ' ', ' ', ' ',  30,  31,  17,  16, ' ', ' ', ' ',  // Dx
-    'C', 'S', 'A', 'C', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',  24,  26,  24,  // Ex
-     25,0x9D,0x9D,0x9D,0x9D,0x9D,0x9D,0x9D,0x9D,  24,  25,  27,  26, ' ', ' ', ' '   // Fx
-};
+const char keycode_to_char(uint16_t keycode) {
+    if ((keycode >= QK_MOD_TAP && keycode <= QK_MOD_TAP_MAX) ||
+        (keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX)) {
 
-// S(QK_BASIC) - S(QK_BASIC_MAX) (0x0200 - 0x02FF)
-static const char PROGMEM code_to_name_shift[256] = {
-//   0    1    2    3    4    5    6    7    8    9    A    B    C    D    E    F
-    ' ', ' ', ' ', ' ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',  // 0x
-    'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '!', '@',  // 1x
-    '#', '$', '%', '^', '&', '*', '(', ')',  20,  19,  27,  26,  22, '_', '+', '{',  // 2x
-    '}', '|', '#', ':', '"', '~', '<', '>', '?', 127,0xD5,0xD6,0xD7,0xD8,0xD9,0xDA,  // 3x
-    0xDB,0xDC,0xDD,0xDE,0XDF,0xFB,'P', 'S',  19, 'I',  17,  30,  16,  16,  31,  26,  // 4x
-     27,  25,  24, 'N', '/', '*', '-', '+',  23, '1', '2', '3', '4', '5', '6', '7',  // 5x
-    '8', '9', '0', '.','\\', 'A',   0, '=', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',  // 6x
-    ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',  // 7x
-    ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',  // 8x
-    ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',  // 9x
-    ' ', ' ', ' ', ' ', ' ',   0, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',  // Ax
-    ' ', ' ', ' ', ' ', ' ',  18, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',  // Bx
-    ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',  24,  25,  27,  // Cx
-     26, 'L', 'R', 'M', ' ', ' ', ' ', ' ', ' ',  30,  31,  17,  16, ' ', ' ', ' ',  // Dx
-    'C', 'S', 'A', 'C', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',  24,  26,  24,  // Ex
-     25,0x9D,0x9D,0x9D,0x9D,0x9D,0x9D,0x9D,0x9D,  24,  25,  27,  26, ' ', ' ', ' '   // Fx
-};
+        keycode &= 0xFF;
+    }
 
-// clang-format on
-oled_rotation_t oled_init_user(oled_rotation_t rotation) {
-  if (!is_keyboard_master()) {
-    return OLED_ROTATION_180;  // flips the display 180 degrees if offhand
-  }
-  return OLED_ROTATION_270;
+    switch (keycode) {
+        // Basic:
+        case KC_NO: return ' ';
+        case KC_TRANSPARENT: return ' ';
+        case KC_A: return 'a';
+        case KC_B: return 'b';
+        case KC_C: return 'c';
+        case KC_D: return 'd';
+        case KC_E: return 'e';
+        case KC_F: return 'f';
+        case KC_G: return 'g';
+        case KC_H: return 'h';
+        case KC_I: return 'i';
+        case KC_J: return 'j';
+        case KC_K: return 'k';
+        case KC_L: return 'l';
+        case KC_M: return 'm';
+        case KC_N: return 'n';
+        case KC_O: return 'o';
+        case KC_P: return 'p';
+        case KC_Q: return 'q';
+        case KC_R: return 'r';
+        case KC_S: return 's';
+        case KC_T: return 't';
+        case KC_U: return 'u';
+        case KC_V: return 'v';
+        case KC_W: return 'w';
+        case KC_X: return 'x';
+        case KC_Y: return 'y';
+        case KC_Z: return 'z';
+        case KC_1: return '1';
+        case KC_2: return '2';
+        case KC_3: return '3';
+        case KC_4: return '4';
+        case KC_5: return '5';
+        case KC_6: return '6';
+        case KC_7: return '7';
+        case KC_8: return '8';
+        case KC_9: return '9';
+        case KC_0: return '0';
+        case KC_ENTER: return 20;
+        case KC_ESCAPE: return 19;
+        case KC_BACKSPACE: return 17;
+        case KC_TAB: return 26;
+        case KC_SPACE: return 22;
+        case KC_MINUS: return '-';
+        case KC_EQUAL: return '=';
+        case KC_LEFT_BRACKET: return ']';
+        case KC_RIGHT_BRACKET: return '[';
+        case KC_BACKSLASH: return '\\';
+        case KC_NONUS_HASH: return '#';
+        case KC_SEMICOLON: return ';';
+        case KC_QUOTE: return '\'';
+        case KC_GRAVE: return '`';
+        case KC_COMMA: return ',';
+        case KC_DOT: return '.';
+        case KC_SLASH: return '/';
+        case KC_CAPS_LOCK: return 'L';
+        case KC_F1: return '1';
+        case KC_F2: return '2';
+        case KC_F3: return '3';
+        case KC_F4: return '4';
+        case KC_F5: return '5';
+        case KC_F6: return '6';
+        case KC_F7: return '7';
+        case KC_F8: return '8';
+        case KC_F9: return '9';
+        case KC_F10: return '0';
+        case KC_F11: return '1';
+        case KC_F12: return '2';
+        case KC_PRINT_SCREEN: return 'S';
+        case KC_SCROLL_LOCK: return 'L';
+        case KC_PAUSE: return 'P';
+        case KC_INSERT: return 'I';
+        case KC_HOME: return 28;
+        case KC_PAGE_UP: return 30;
+        case KC_DELETE: return 16;
+        case KC_END: return 29;
+        case KC_PAGE_DOWN: return 31;
+        case KC_RIGHT: return 26;
+        case KC_LEFT: return 27;
+        case KC_DOWN: return 25;
+        case KC_UP: return 24;
+        case KC_NUM_LOCK: return 'N';
+        case KC_KP_SLASH: return '/';
+        case KC_KP_ASTERISK: return '*';
+        case KC_KP_MINUS: return '-';
+        case KC_KP_PLUS: return '+';
+        case KC_KP_ENTER: return 20;
+        case KC_KP_1: return '1';
+        case KC_KP_2: return '2';
+        case KC_KP_3: return '3';
+        case KC_KP_4: return '4';
+        case KC_KP_5: return '5';
+        case KC_KP_6: return '6';
+        case KC_KP_7: return '7';
+        case KC_KP_8: return '8';
+        case KC_KP_9: return '9';
+        case KC_KP_0: return '0';
+        case KC_KP_DOT: return '.';
+        case KC_NONUS_BACKSLASH: return '\\';
+        case KC_APPLICATION: return 'A';
+        case KC_KB_POWER: return 'P';
+        case KC_KP_EQUAL: return '=';
+        case KC_EXECUTE: return 'E';
+        case KC_HELP: return 'H';
+        case KC_MENU: return 'M';
+        case KC_SELECT: return 'S';
+        case KC_STOP: return 'S';
+        case KC_AGAIN: return 'A';
+        case KC_UNDO: return 'Z';
+        case KC_CUT: return 'X';
+        case KC_COPY: return 'C';
+        case KC_PASTE: return 'V';
+        case KC_FIND: return 'F';
+        case KC_KB_MUTE: return 1;
+        case KC_KB_VOLUME_UP: return 2;
+        case KC_KB_VOLUME_DOWN: return 3;
+        case KC_LOCKING_CAPS_LOCK: return 'L';
+        case KC_LOCKING_NUM_LOCK: return 'N';
+        case KC_LOCKING_SCROLL_LOCK: return 'S';
+        case KC_KP_COMMA: return ',';
+        case KC_RETURN: return 20;
+        case KC_AUDIO_MUTE: return 1;
+        case KC_AUDIO_VOL_UP: return 2;
+        case KC_AUDIO_VOL_DOWN: return 3;
+        case KC_MEDIA_NEXT_TRACK: return 4;
+        case KC_MEDIA_PREV_TRACK: return 5;
+        case KC_MEDIA_STOP: return 6;
+        case KC_MEDIA_PLAY_PAUSE: return 7;
+        case KC_MS_UP: return 24;
+        case KC_MS_DOWN: return 25;
+        case KC_MS_LEFT: return 27;
+        case KC_MS_RIGHT: return 26;
+        case KC_MS_BTN1: return '1';
+        case KC_MS_BTN2: return '2';
+        case KC_MS_BTN3: return '3';
+        case KC_MS_BTN4: return '4';
+        case KC_MS_BTN5: return '5';
+        case KC_MS_BTN6: return '6';
+        case KC_MS_BTN7: return '7';
+        case KC_MS_BTN8: return '8';
+        case KC_MS_WH_UP: return 30;
+        case KC_MS_WH_DOWN: return 31;
+        case KC_MS_WH_LEFT: return 17;
+        case KC_MS_WH_RIGHT: return 16;
+        case KC_LEFT_CTRL: return 'C';
+        case KC_LEFT_SHIFT: return 'S';
+        case KC_LEFT_ALT: return 'A';
+        case KC_LEFT_GUI: return 'G';
+        case KC_RIGHT_CTRL: return 'C';
+        case KC_RIGHT_SHIFT: return 'S';
+        case KC_RIGHT_ALT: return 'P';
+        case KC_RIGHT_GUI: return 'G';
+
+        // US shifted keycodes
+        case KC_TILD: return '~';
+        case KC_EXLM: return '!';
+        case KC_AT: return '@';
+        case KC_HASH: return '#';
+        case KC_DLR: return '$';
+        case KC_PERC: return '%';
+        case KC_CIRC: return '^';
+        case KC_AMPR: return '&';
+        case KC_ASTR: return '*';
+        case KC_LPRN: return '(';
+        case KC_RPRN: return ')';
+        case KC_UNDS: return '_';
+        case KC_PLUS: return '+';
+        case KC_LCBR: return '{';
+        case KC_RCBR: return '}';
+        case KC_PIPE: return '|';
+        case KC_COLN: return ':';
+        case KC_DQUO: return '"';
+        case KC_LABK: return '<';
+        case KC_RABK: return '>';
+        case KC_QUES: return '?';
+
+        // Lighting
+        case RGB_TOG: return 11;
+        case RGB_MODE_FORWARD: return 26;
+        case RGB_MODE_REVERSE: return 27;
+        case RGB_HUI: return 14;
+        case RGB_HUD: return 14;
+        case RGB_SAI: return 15;
+        case RGB_SAD: return 15;
+        case RGB_VAI: return 12;
+        case RGB_VAD: return 12;
+        case RGB_SPI: return 24;
+        case RGB_SPD: return 25;
+
+        // Quantum keycodes
+        case QK_BOOT: return 'Q';
+
+        // Custom keycodes
+        case COMPOSE_AE:
+            return 0x80;
+        case COMPOSE_OSLASH:
+            return 0x81;
+        case COMPOSE_ARING:
+            return 0x82;
+        default:
+            break;
+    }
+
+    return 8;
 }
 
-#define IS_TAP_HOLD(keycode) ((keycode >= QK_MOD_TAP && keycode <= QK_MOD_TAP_MAX) || \
-                              (keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX))
-
-const char keycode_to_char(uint16_t keycode) {
+/*
+const char keycode_to_char_old(uint16_t keycode) {
     if ((keycode >= QK_MOD_TAP && keycode <= QK_MOD_TAP_MAX) ||
         (keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX)) {
 
@@ -176,7 +338,9 @@ const char keycode_to_char(uint16_t keycode) {
 
     if (keycode >= QK_MODS && keycode <= QK_MODS_MAX) {
         keycode &= 0xFF;
-        return pgm_read_byte(&code_to_name_shift[keycode]);
+        if (keycode < ARRAY_SIZE(code_to_name)) {
+            return pgm_read_byte(&code_to_name_shift[keycode]);
+        }
     }
     //    (keycode >= ALT_TAB && keycode < CUSTOM_LAST)) {
 
@@ -184,8 +348,33 @@ const char keycode_to_char(uint16_t keycode) {
         return pgm_read_byte(&code_to_name[keycode]);
     }
 
-    return 0x04;
+    switch (keycode) {
+        case COMPOSE_AE:
+            return 0x80;
+        case COMPOSE_OSLASH:
+            return 0x81;
+        case COMPOSE_ARING:
+            return 0x82;
+        default:
+            break;
+    }
+
+    return 8;
 }
+*/
+
+// clang-format on
+oled_rotation_t oled_init_user(oled_rotation_t rotation) {
+/*
+  if (!is_keyboard_master()) {
+    return OLED_ROTATION_180;  // flips the display 180 degrees if offhand
+  }
+*/
+  return OLED_ROTATION_270;
+}
+
+#define IS_TAP_HOLD(keycode) ((keycode >= QK_MOD_TAP && keycode <= QK_MOD_TAP_MAX) || \
+                              (keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX))
 
 void oled_render_layer_state(void) {
     static unsigned int prev_layer = -1;
@@ -202,6 +391,7 @@ void oled_render_layer_state(void) {
     sprintf(buf, "%d", layer);
     oled_write_ln(buf, false);
     */
+    oled_clear();
     oled_write_ln(layer_strings[layer], false);
     oled_advance_page(true);
 
@@ -209,7 +399,8 @@ void oled_render_layer_state(void) {
         for (int row = 0; row <= 3; row++) {
             for (int col = 0; col < MATRIX_COLS; col++) {
                 uint16_t keycode = keymaps[layer][row][col];
-                bool invert = IS_TAP_HOLD(keycode);
+                //bool invert = IS_TAP_HOLD(keycode);
+                bool invert = false;
                 oled_write_char(keycode_to_char(keycode), invert);
             }
             //oled_advance_page(true);
@@ -284,12 +475,7 @@ void oled_test(void) {
 char keylog_str[24] = {};
 
 void set_keylog(uint16_t keycode, keyrecord_t *record) {
-  char name = ' ';
-    if ((keycode >= QK_MOD_TAP && keycode <= QK_MOD_TAP_MAX) ||
-        (keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX)) { keycode = keycode & 0xFF; }
-  if (keycode < 60) {
-    name = code_to_name[keycode];
-  }
+  char name = keycode_to_char(keycode);
 
   // update keylog
   snprintf(keylog_str, sizeof(keylog_str), "%dx%d, k%2d : %c",
@@ -326,6 +512,8 @@ void oled_render_logo(void) {
 }
 
 bool oled_task_user(void) {
+    oled_render_layer_state();
+    /*
     if (is_keyboard_master()) {
         oled_render_layer_state();
         //oled_render_keylog();
@@ -333,6 +521,7 @@ bool oled_task_user(void) {
     } else {
         oled_render_logo();
     }
+    */
     return false;
 }
 
