@@ -562,11 +562,11 @@ void ps2_mouse_init_user() {
     PS2_MOUSE_SEND(0xE2, "tpsens: 0xE2");
     PS2_MOUSE_SEND(0x81, "tpsens: 0x81");
     PS2_MOUSE_SEND(0x4A, "tpsens: 0x4A");
-    PS2_MOUSE_SEND(0xA0, "tpsens: 0x59");
+    PS2_MOUSE_SEND(0x64, "tpsens: 0x49");
 
-    // force calibration
-    PS2_MOUSE_SEND(0xE2, "tpcali: 0xE2");
-    PS2_MOUSE_SEND(0x51, "tpcali: 0x51");
+    /*// force calibration*/
+    /*PS2_MOUSE_SEND(0xE2, "tpcali: 0xE2");*/
+    /*PS2_MOUSE_SEND(0x51, "tpcali: 0x51");*/
 }
 #endif
 
