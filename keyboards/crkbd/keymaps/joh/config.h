@@ -96,6 +96,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define PS2_MOUSE_ROTATE 90
 #define PS2_MOUSE_SCROLL_BTN_MASK 0
 
+//#define TAP_CODE_DELAY 100
+
+/*
+#include <quantum/util.h>
+#pragma message ("TAP_CODE_DELAY=" STR(TAP_CODE_DELAY))
+#pragma message ("PS2_MOUSE_ROTATE=" STR(PS2_MOUSE_ROTATE))
+*/
+
 //#define PS2_MOUSE_DEBUG_RAW
 //#define PS2_MOUSE_DEBUG_HID
 
