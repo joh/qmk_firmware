@@ -63,7 +63,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [NAV] = LAYOUT_split_3x6_3(
         QK_RBT,  QK_BOOT,  XXX,      XXX,      XXX,      XXX,  /***/  U_RDO,    U_PST,    U_CPY,    U_CUT,    U_UND,    XXX,
-        XXX,     KC_LALT,  KC_LGUI,  KC_LCTL,  KC_LSFT,  XXX,  /***/  KC_LEFT,  KC_DOWN,  KC_UP,    KC_RGHT,  KC_CAPS,  ALT_TAB,
+        XXX,     KC_LALT,  KC_LGUI,  KC_LCTL,  KC_LSFT,  XXX,  /***/  KC_LEFT,  KC_DOWN,  KC_UP,    KC_RGHT,  CW_TOGG,  ALT_TAB,
         XXX,     XXX,      KC_ALGR,  XXX,      XXX,      XXX,  /***/  KC_HOME,  KC_PGDN,  KC_PGUP,  KC_END,   KC_INS,   XXX,
                                      XXX,      XXX,      XXX,  /***/  KC_ENT,   KC_BSPC,  KC_DEL
   ),
@@ -185,23 +185,23 @@ const char keycode_to_char(uint16_t keycode) {
         case KC_COMMA: return ',';
         case KC_DOT: return '.';
         case KC_SLASH: return '/';
-        case KC_CAPS_LOCK: return 'L';
-        case KC_F1: return '1';
-        case KC_F2: return '2';
-        case KC_F3: return '3';
-        case KC_F4: return '4';
-        case KC_F5: return '5';
-        case KC_F6: return '6';
-        case KC_F7: return '7';
-        case KC_F8: return '8';
-        case KC_F9: return '9';
-        case KC_F10: return '0';
-        case KC_F11: return '1';
-        case KC_F12: return '2';
-        case KC_PRINT_SCREEN: return 'S';
-        case KC_SCROLL_LOCK: return 'L';
-        case KC_PAUSE: return 'P';
-        case KC_INSERT: return 'I';
+        case KC_CAPS_LOCK: return 145;
+        case KC_F1: return 131;
+        case KC_F2: return 132;
+        case KC_F3: return 133;
+        case KC_F4: return 134;
+        case KC_F5: return 135;
+        case KC_F6: return 136;
+        case KC_F7: return 137;
+        case KC_F8: return 138;
+        case KC_F9: return 139;
+        case KC_F10: return 140;
+        case KC_F11: return 131;
+        case KC_F12: return 132;
+        case KC_PRINT_SCREEN: return 171;
+        case KC_SCROLL_LOCK: return 168;
+        case KC_PAUSE: return 169;
+        case KC_INSERT: return 167;
         case KC_HOME: return 28;
         case KC_PAGE_UP: return 30;
         case KC_DELETE: return 16;
@@ -229,7 +229,7 @@ const char keycode_to_char(uint16_t keycode) {
         case KC_KP_0: return '0';
         case KC_KP_DOT: return '.';
         case KC_NONUS_BACKSLASH: return '\\';
-        case KC_APPLICATION: return 'A';
+        case KC_APPLICATION: return 163;
         case KC_KB_POWER: return 'P';
         case KC_KP_EQUAL: return '=';
         case KC_EXECUTE: return 'E';
@@ -237,11 +237,11 @@ const char keycode_to_char(uint16_t keycode) {
         case KC_MENU: return 'M';
         case KC_SELECT: return 'S';
         case KC_STOP: return 'S';
-        case KC_AGAIN: return 'A';
-        case KC_UNDO: return 'Z';
-        case KC_CUT: return 'X';
-        case KC_COPY: return 'C';
-        case KC_PASTE: return 'V';
+        case KC_AGAIN: return 174;
+        case KC_UNDO: return 175;
+        case KC_CUT: return 173;
+        case KC_COPY: return 165;
+        case KC_PASTE: return 172;
         case KC_FIND: return 'F';
         case KC_KB_MUTE: return 1;
         case KC_KB_VOLUME_UP: return 2;
@@ -262,26 +262,26 @@ const char keycode_to_char(uint16_t keycode) {
         case KC_MS_DOWN: return 25;
         case KC_MS_LEFT: return 27;
         case KC_MS_RIGHT: return 26;
-        case KC_MS_BTN1: return '1';
-        case KC_MS_BTN2: return '2';
-        case KC_MS_BTN3: return '3';
-        case KC_MS_BTN4: return '4';
-        case KC_MS_BTN5: return '5';
-        case KC_MS_BTN6: return '6';
-        case KC_MS_BTN7: return '7';
-        case KC_MS_BTN8: return '8';
+        case KC_MS_BTN1: return 131;
+        case KC_MS_BTN2: return 132;
+        case KC_MS_BTN3: return 133;
+        case KC_MS_BTN4: return 134;
+        case KC_MS_BTN5: return 135;
+        case KC_MS_BTN6: return 136;
+        case KC_MS_BTN7: return 137;
+        case KC_MS_BTN8: return 138;
         case KC_MS_WH_UP: return 30;
         case KC_MS_WH_DOWN: return 31;
         case KC_MS_WH_LEFT: return 17;
         case KC_MS_WH_RIGHT: return 16;
-        case KC_LEFT_CTRL: return 'C';
-        case KC_LEFT_SHIFT: return 'S';
-        case KC_LEFT_ALT: return 'A';
-        case KC_LEFT_GUI: return 'G';
-        case KC_RIGHT_CTRL: return 'C';
-        case KC_RIGHT_SHIFT: return 'S';
-        case KC_RIGHT_ALT: return 'P';
-        case KC_RIGHT_GUI: return 'G';
+        case KC_LEFT_CTRL: return 165;
+        case KC_LEFT_SHIFT: return 171;
+        case KC_LEFT_ALT: return 163;
+        case KC_LEFT_GUI: return 166;
+        case KC_RIGHT_CTRL: return 165;
+        case KC_RIGHT_SHIFT: return 171;
+        case KC_RIGHT_ALT: return 176;
+        case KC_RIGHT_GUI: return 166;
 
         // US shifted keycodes
         case KC_TILD: return '~';
@@ -307,21 +307,22 @@ const char keycode_to_char(uint16_t keycode) {
         case KC_QUES: return '?';
 
         // Lighting
-        case RGB_TOG: return 11;
-        case RGB_MODE_FORWARD: return 26;
-        case RGB_MODE_REVERSE: return 27;
-        case RGB_HUI: return 14;
-        case RGB_HUD: return 14;
-        case RGB_SAI: return 15;
-        case RGB_SAD: return 15;
-        case RGB_VAI: return 12;
-        case RGB_VAD: return 12;
-        case RGB_SPI: return 24;
-        case RGB_SPD: return 25;
+        case RGB_TOG: return 9;
+        case RGB_MODE_FORWARD: return 14;
+        case RGB_MODE_REVERSE: return 14;
+        case RGB_HUI: return 12;
+        case RGB_HUD: return 12;
+        case RGB_SAI: return 11;
+        case RGB_SAD: return 11;
+        case RGB_VAI: return 15;
+        case RGB_VAD: return 15;
+        case RGB_SPI: return 30;
+        case RGB_SPD: return 31;
 
         // Quantum keycodes
-        case QK_BOOT: return 'Q';
-        case QK_RBT: return 'R';
+        case QK_BOOT: return 164;
+        case QK_RBT: return 170;
+        case CW_TOGG: return 168;
 
         // Custom keycodes
         case ALT_TAB:
@@ -385,7 +386,8 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
     return OLED_ROTATION_180;  // flips the display 180 degrees if offhand
   }
 */
-  return OLED_ROTATION_270;
+  //return OLED_ROTATION_270;
+  return OLED_ROTATION_0;
 }
 
 #define IS_TAP_HOLD(keycode) ((keycode >= QK_MOD_TAP && keycode <= QK_MOD_TAP_MAX) || \
@@ -421,7 +423,7 @@ void oled_render_layer_state(void) {
                 bool invert = false;
                 oled_write_char(keycode_to_char(keycode), invert);
             }
-            //oled_advance_page(true);
+            oled_advance_page(true);
         }
 
     } else {
@@ -434,7 +436,7 @@ void oled_render_layer_state(void) {
                 bool invert = false;
                 oled_write_char(keycode_to_char(keycode), invert);
             }
-            //oled_advance_page(true);
+            oled_advance_page(true);
         }
 
         oled_advance_page(true);
