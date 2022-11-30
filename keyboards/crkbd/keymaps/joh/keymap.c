@@ -55,8 +55,8 @@ enum custom_keycodes {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [BASE] = LAYOUT_split_3x6_3(
         KC_EQL,   KC_Q,               KC_W,          KC_E,          KC_R,          KC_T,  /***/  KC_Y,  KC_U,          KC_I,          KC_O,            KC_P,                 KC_BSLS,
-        KC_UNDS,  LALT_T(KC_A),       LGUI_T(KC_S),  LCTL_T(KC_D),  LSFT_T(KC_F),  KC_G,  /***/  KC_H,  RSFT_T(KC_J),  LCTL_T(KC_K),  LGUI_T(KC_L),    LALT_T(KC_SCLN),      KC_QUOT,
-        KC_HASH,  LT(COMPOSE, KC_Z),  ALGR_T(KC_X),  KC_C,          KC_V,          KC_B,  /***/  KC_N,  KC_M,          KC_COMM,       ALGR_T(KC_DOT),  LT(BUTTON, KC_SLSH),  KC_MINS,
+        KC_HASH,  LALT_T(KC_A),       LGUI_T(KC_S),  LCTL_T(KC_D),  LSFT_T(KC_F),  KC_G,  /***/  KC_H,  RSFT_T(KC_J),  LCTL_T(KC_K),  LGUI_T(KC_L),    LALT_T(KC_SCLN),      KC_QUOT,
+        KC_UNDS,  LT(COMPOSE, KC_Z),  ALGR_T(KC_X),  KC_C,          KC_V,          KC_B,  /***/  KC_N,  KC_M,          KC_COMM,       ALGR_T(KC_DOT),  LT(BUTTON, KC_SLSH),  KC_MINS,
         //KC_UNDS,  KC_A,       KC_S,  KC_D,  KC_F,  KC_G,  /***/  KC_H,  KC_J,  KC_K,  KC_L,    KC_SCLN,      KC_QUOT,
         //KC_HASH,  KC_Z,  KC_X,  KC_C,          KC_V,          KC_B,  /***/  KC_N,  KC_M,          KC_COMM,       KC_DOT,  KC_SLSH,  KC_MINS,
                                 LT(MEDIA, KC_ESC),  LT(NAV, KC_SPC),  LT(MOUSE, KC_TAB),  /***/  LT(SYM, KC_ENT),  LT(NUM, KC_BSPC),  LT(FUN, KC_DEL)
@@ -119,8 +119,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   )
 };
 
-uint8_t tpsens = 90;
+// Trackpoint sensitivity
+static uint8_t trackpoint_sensitivity = 90;
 
+// Dynamic macro recording state
 static uint8_t dynamic_rec = 0;
 
 #ifdef DYNAMIC_MACRO_ENABLE
@@ -366,50 +368,14 @@ const char keycode_to_char(uint16_t keycode) {
     return 8;
 }
 
-/*
-const char keycode_to_char_old(uint16_t keycode) {
-    if ((keycode >= QK_MOD_TAP && keycode <= QK_MOD_TAP_MAX) ||
-        (keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX)) {
-
-        keycode &= 0xFF;
-    }
-
-    if (keycode >= QK_MODS && keycode <= QK_MODS_MAX) {
-        keycode &= 0xFF;
-        if (keycode < ARRAY_SIZE(code_to_name)) {
-            return pgm_read_byte(&code_to_name_shift[keycode]);
-        }
-    }
-    //    (keycode >= ALT_TAB && keycode < CUSTOM_LAST)) {
-
-    if (keycode < ARRAY_SIZE(code_to_name)) {
-        return pgm_read_byte(&code_to_name[keycode]);
-    }
-
-    switch (keycode) {
-        case COMPOSE_AE:
-            return 0x80;
-        case COMPOSE_OSLASH:
-            return 0x81;
-        case COMPOSE_ARING:
-            return 0x82;
-        default:
-            break;
-    }
-
-    return 8;
-}
-*/
-
-// clang-format on
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
-/*
-  if (!is_keyboard_master()) {
-    return OLED_ROTATION_180;  // flips the display 180 degrees if offhand
-  }
-*/
-  //return OLED_ROTATION_270;
-  return OLED_ROTATION_0;
+    /*
+       if (!is_keyboard_master()) {
+       return OLED_ROTATION_180;  // flips the display 180 degrees if offhand
+       }
+       */
+    //return OLED_ROTATION_270;
+    return OLED_ROTATION_0;
 }
 
 #define IS_TAP_HOLD(keycode) ((keycode >= QK_MOD_TAP && keycode <= QK_MOD_TAP_MAX) || \
@@ -423,20 +389,16 @@ void oled_render_layer_state(void) {
 
     unsigned int layer = get_highest_layer(layer_state);
     bool caps_word = is_caps_word_on();
-    if (layer == prev_layer && tpsens == prev_tpsens && prev_caps_word == caps_word && prev_dynamic_rec == dynamic_rec)
+    if (layer == prev_layer &&
+        trackpoint_sensitivity == prev_tpsens &&
+        caps_word == prev_caps_word &&
+        dynamic_rec == prev_dynamic_rec)
         return;
+
     prev_layer = layer;
     prev_caps_word = caps_word;
     prev_dynamic_rec = dynamic_rec;
-    print("Layer: ");
-    print_dec(layer);
-    print("\n");
-    /*
-    char buf[10];
-    sprintf(buf, "%d", layer);
-    oled_write_ln(buf, false);
-    */
-    oled_clear();
+
     oled_write_ln(layer_strings[layer], false);
     oled_advance_page(true);
 
@@ -446,9 +408,7 @@ void oled_render_layer_state(void) {
                 keypos_t pos = {col, row};
                 uint8_t key_layer = layer_switch_get_layer(pos);
                 uint16_t keycode = keymaps[key_layer][row][col];
-                //bool invert = IS_TAP_HOLD(keycode);
-                bool invert = false;
-                oled_write_char(keycode_to_char(keycode), invert);
+                oled_write_char(keycode_to_char(keycode), false);
             }
             oled_advance_page(true);
         }
@@ -459,19 +419,17 @@ void oled_render_layer_state(void) {
                 keypos_t pos = {col, row};
                 uint8_t key_layer = layer_switch_get_layer(pos);
                 uint16_t keycode = keymaps[key_layer][row][col];
-                //bool invert = IS_TAP_HOLD(keycode);
-                bool invert = false;
-                oled_write_char(keycode_to_char(keycode), invert);
+                oled_write_char(keycode_to_char(keycode), false);
             }
             oled_advance_page(true);
         }
 
         oled_advance_page(true);
 
-        if (prev_tpsens != tpsens || layer == MOUSE) {
+        if (prev_tpsens != trackpoint_sensitivity || layer == MOUSE) {
             char buf[32];
-            prev_tpsens = tpsens;
-            snprintf(buf, sizeof(buf), "TP:%d", tpsens);
+            prev_tpsens = trackpoint_sensitivity;
+            snprintf(buf, sizeof(buf), "TP:%d", trackpoint_sensitivity);
             oled_write_ln(buf, false);
         } else {
             oled_advance_page(true);
@@ -479,28 +437,23 @@ void oled_render_layer_state(void) {
 
         if (caps_word) {
             oled_write_char(keycode_to_char(CW_TOGG), false);
+        } else {
+            oled_write_char(' ', false);
         }
 
         switch (dynamic_rec) {
             case 1:
-                oled_write_char(141, false);
+                oled_write_char(keycode_to_char(DM_REC1), false);
                 break;
             case 2:
-                oled_write_char(142, false);
+                oled_write_char(keycode_to_char(DM_REC2), false);
                 break;
             default:
+                oled_write_char(' ', false);
                 break;
         }
     }
 }
-
-/*
- * 1183
- * 1197
- * 1199
- * 1211
- * 1226
- */
 
 void oled_test(void) {
     // Display: 21x5
@@ -515,67 +468,106 @@ void oled_test(void) {
     //oled_scroll_left();  // Turns on scrolling
 }
 
-
-char keylog_str[24] = {};
-
-void set_keylog(uint16_t keycode, keyrecord_t *record) {
-  char name = keycode_to_char(keycode);
-
-  // update keylog
-  snprintf(keylog_str, sizeof(keylog_str), "%dx%d, k%2d : %c",
-           record->event.key.row, record->event.key.col,
-           keycode, name);
-}
-
-void oled_render_keylog(void) {
-    oled_write(keylog_str, false);
-}
-
-void render_bootmagic_status(bool status) {
-    /* Show Ctrl-Gui Swap options */
-    static const char PROGMEM logo[][2][3] = {
-        {{0x97, 0x98, 0}, {0xb7, 0xb8, 0}},
-        {{0x95, 0x96, 0}, {0xb5, 0xb6, 0}},
-    };
-    if (status) {
-        oled_write_ln_P(logo[0][0], false);
-        oled_write_ln_P(logo[0][1], false);
-    } else {
-        oled_write_ln_P(logo[1][0], false);
-        oled_write_ln_P(logo[1][1], false);
-    }
-}
-
-void oled_render_logo(void) {
-    static const char PROGMEM crkbd_logo[] = {
-        0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87, 0x88, 0x89, 0x8a, 0x8b, 0x8c, 0x8d, 0x8e, 0x8f, 0x90, 0x91, 0x92, 0x93, 0x94,
-        0xa0, 0xa1, 0xa2, 0xa3, 0xa4, 0xa5, 0xa6, 0xa7, 0xa8, 0xa9, 0xaa, 0xab, 0xac, 0xad, 0xae, 0xaf, 0xb0, 0xb1, 0xb2, 0xb3, 0xb4,
-        0xc0, 0xc1, 0xc2, 0xc3, 0xc4, 0xc5, 0xc6, 0xc7, 0xc8, 0xc9, 0xca, 0xcb, 0xcc, 0xcd, 0xce, 0xcf, 0xd0, 0xd1, 0xd2, 0xd3, 0xd4,
-        0};
-    oled_write_P(crkbd_logo, false);
-}
-
 bool oled_task_user(void) {
     oled_render_layer_state();
-    /*
-    if (is_keyboard_master()) {
-        oled_render_layer_state();
-        //oled_render_keylog();
-        //oled_test();
-    } else {
-        oled_render_logo();
-    }
-    */
     return false;
 }
+#endif // OLED_ENABLE
 
-void tpsens_set(uint8_t tpsens);
-void tp_reset(void);
-void ps2_regdump(void);
+#ifdef PS2_MOUSE_ENABLE
+void trackpoint_set_sensitivity(uint8_t sensitivity) {
+    PS2_MOUSE_SEND(0xE2, "trackpoint_set_sensitivity: 0xE2");
+    PS2_MOUSE_SEND(0x81, "trackpoint_set_sensitivity: 0x81");
+    PS2_MOUSE_SEND(0x4A, "trackpoint_set_sensitivity: 0x4A");
+    PS2_MOUSE_SEND(sensitivity, "trackpoint_set_sensitivity: xxx");
+}
+
+void trackpoint_reset(void) {
+    PS2_MOUSE_SEND(0xE2, "trackpoint_reset: 0xE2");
+    PS2_MOUSE_SEND(0x51, "trackpoint_reset: 0x51");
+}
+
+void ps2_mouse_init_user() {
+    // set TrackPoint sensitivity
+    trackpoint_set_sensitivity(trackpoint_sensitivity);
+}
+
+void ps2_regdump(void) {
+    println("Register dump:");
+    print("     ");
+    for (uint8_t addr = 0; addr <= 0xF; addr++) {
+        print_hex8(addr);
+        print(" ");
+    }
+    println("");
+    for (uint16_t addr = 0; addr <= 0xFF; addr++) {
+        uint8_t data;
+        if ((addr & 0xf) == 0) {
+            print_hex8(addr);
+            print(" | ");
+        }
+
+        ps2_host_send(0xE2);
+        ps2_host_send(0x80);
+        data = ps2_host_send((uint8_t)addr);
+        if (data == 0xFA) {
+            data = ps2_host_recv_response();
+            print_hex8(data);
+            print(" ");
+        } else {
+            print("xx ");
+        }
+        if ((addr & 0xf) == 0xf) {
+            println("");
+        }
+    }
+    println("");
+}
+#endif // PS2_MOUSE_ENABLE
+
+#if defined MH_AUTO_BUTTONS && defined PS2_MOUSE_ENABLE && defined MOUSEKEY_ENABLE
+
+static uint16_t mh_auto_buttons_timer;
+extern int tp_buttons; // mousekey button state set in action.c and used in ps2_mouse.c
+
+void ps2_mouse_moved_user(report_mouse_t *mouse_report) {
+    if (abs(mouse_report->x) <= 1 && abs(mouse_report->y) <= 1) {
+        // Ignore tiny mouse events
+        return;
+    }
+    if (mh_auto_buttons_timer) {
+        mh_auto_buttons_timer = timer_read();
+    } else {
+        if (!tp_buttons) {
+            layer_on(MH_AUTO_BUTTONS_LAYER);
+            mh_auto_buttons_timer = timer_read();
+#if defined CONSOLE_ENABLE
+            print("mh_auto_buttons: on\n");
+#endif
+        }
+    }
+}
+
+void matrix_scan_user(void) {
+    if (mh_auto_buttons_timer && (timer_elapsed(mh_auto_buttons_timer) > MH_AUTO_BUTTONS_TIMEOUT)) {
+        if (!tp_buttons) {
+            layer_off(MH_AUTO_BUTTONS_LAYER);
+            mh_auto_buttons_timer = 0;
+#if defined CONSOLE_ENABLE
+            print("mh_auto_buttons: off\n");
+#endif
+        }
+    }
+}
+
+#endif // defined MH_AUTO_BUTTONS && defined PS2_MOUSE_ENABLE && #defined MOUSEKEY_ENABLE
+
+
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  if (record->event.pressed) {
-    set_keylog(keycode, record);
+    if (!record->event.pressed)
+        return true;
+
     switch (keycode) {
         case ALT_TAB:
             SEND_STRING(SS_DOWN(X_LALT) SS_TAP(X_TAB) SS_UP(X_LALT));
@@ -583,23 +575,25 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case U_PST:
             SEND_STRING(SS_LSFT(SS_TAP(X_INS)));
             break;
+#ifdef PS2_MOUSE_ENABLE
         case TP_SENSI:
-            if ((int)tpsens + 5 > 0xff)
-                tpsens = 0xff;
+            if ((int)trackpoint_sensitivity + 5 > 0xff)
+                trackpoint_sensitivity = 0xff;
             else
-                tpsens += 5;
-            tpsens_set(tpsens);
+                trackpoint_sensitivity += 5;
+            trackpoint_set_sensitivity(trackpoint_sensitivity);
             break;
         case TP_SENSD:
-            if ((int)tpsens - 5 < 0)
-                tpsens = 0;
+            if ((int)trackpoint_sensitivity - 5 < 0)
+                trackpoint_sensitivity = 0;
             else
-                tpsens -= 5;
-            tpsens_set(tpsens);
+                trackpoint_sensitivity -= 5;
+            trackpoint_set_sensitivity(trackpoint_sensitivity);
             break;
         case TP_RESET:
-            tp_reset();
+            trackpoint_reset();
             break;
+#endif
         case COMPOSE_AE:
             SEND_STRING(SS_RALT("ae"));
             break;
@@ -609,11 +603,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case COMPOSE_ARING:
             SEND_STRING(SS_RALT("aa"));
             break;
+        default:
+            break;
     }
-  }
-  return true;
+
+    return true;
 }
-#endif // OLED_ENABLE
 
 void keyboard_post_init_user(void) {
     // Customise these values to desired behaviour
@@ -622,91 +617,3 @@ void keyboard_post_init_user(void) {
     //debug_keyboard=true;
     debug_mouse=true;
 }
-
-#ifdef PS2_MOUSE_ENABLE
-void tpsens_set(uint8_t tpsens) {
-    PS2_MOUSE_SEND(0xE2, "tpsens: 0xE2");
-    PS2_MOUSE_SEND(0x81, "tpsens: 0x81");
-    PS2_MOUSE_SEND(0x4A, "tpsens: 0x4A");
-    PS2_MOUSE_SEND(tpsens, "tpsens: xxx");
-}
-
-void tp_reset(void) {
-    PS2_MOUSE_SEND(0xE2, "tpsens: 0xE2");
-    PS2_MOUSE_SEND(0x51, "tpsens: 0x51");
-}
-
-void ps2_mouse_init_user() {
-    // set TrackPoint sensitivity
-    tpsens_set(tpsens);
-
-    /*// force calibration*/
-    /*PS2_MOUSE_SEND(0xE2, "tpcali: 0xE2");*/
-    /*PS2_MOUSE_SEND(0x51, "tpcali: 0x51");*/
-}
-
-void ps2_regdump(void) {
-  println("Register dump:");
-  print("     ");
-  for (uint8_t addr = 0; addr <= 0xF; addr++) {
-      print_hex8(addr);
-      print(" ");
-  }
-  println("");
-  for (uint16_t addr = 0; addr <= 0xFF; addr++) {
-      uint8_t data;
-      if ((addr & 0xf) == 0) {
-          print_hex8(addr);
-          print(" | ");
-      }
-
-      ps2_host_send(0xE2);
-      ps2_host_send(0x80);
-      data = ps2_host_send((uint8_t)addr);
-      if (data == 0xFA) {
-          data = ps2_host_recv_response();
-          print_hex8(data);
-          print(" ");
-      } else {
-          print("xx ");
-      }
-      if ((addr & 0xf) == 0xf) {
-          println("");
-      }
-  }
-  println("");
-}
-#endif
-
-#if defined MH_AUTO_BUTTONS && defined PS2_MOUSE_ENABLE && defined MOUSEKEY_ENABLE
-
-static uint16_t mh_auto_buttons_timer;
-extern int tp_buttons; // mousekey button state set in action.c and used in ps2_mouse.c
-
-void ps2_mouse_moved_user(report_mouse_t *mouse_report) {
-  if (mh_auto_buttons_timer) {
-    mh_auto_buttons_timer = timer_read();
-  } else {
-    if (!tp_buttons) {
-      layer_on(MH_AUTO_BUTTONS_LAYER);
-      mh_auto_buttons_timer = timer_read();
-  #if defined CONSOLE_ENABLE
-      print("mh_auto_buttons: on\n");
-  #endif
-    }
-  }
-}
-
-void matrix_scan_user(void) {
-  if (mh_auto_buttons_timer && (timer_elapsed(mh_auto_buttons_timer) > MH_AUTO_BUTTONS_TIMEOUT)) {
-    if (!tp_buttons) {
-      layer_off(MH_AUTO_BUTTONS_LAYER);
-      mh_auto_buttons_timer = 0;
-  #if defined CONSOLE_ENABLE
-      print("mh_auto_buttons: off\n");
-  #endif
-    }
-  }
-}
-
-#endif // defined MH_AUTO_BUTTONS && defined PS2_MOUSE_ENABLE && #defined MOUSEKEY_ENABLE

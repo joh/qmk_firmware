@@ -22,14 +22,17 @@ GRAVE_ESC_ENABLE = no
 MAGIC_ENABLE = no
 DYNAMIC_MACRO_ENABLE = yes
 
-PS2_ENABLE = yes
-PS2_MOUSE_ENABLE = yes
-PS2_DRIVER = vendor
-#PS2_USE_INT = yes
-#
+# Enable trackpoint
+TRACKPOINT_ENABLE = yes
+ifeq ($(strip $(TRACKPOINT_ENABLE)), yes)
+  PS2_ENABLE = yes
+  PS2_MOUSE_ENABLE = yes
+  PS2_DRIVER = vendor
+endif
+
 CONSOLE_ENABLE = yes
 
-MH_AUTO_BUTTONS=yes
+MH_AUTO_BUTTONS = yes
 
 ifeq ($(strip $(MH_AUTO_BUTTONS)), yes)
   MOUSEKEY_ENABLE = yes
