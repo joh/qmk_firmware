@@ -25,7 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endif
 
 #define U_RDO KC_AGIN
-#define U_PST KC_PSTE
+//#define U_PST KC_PSTE
 #define U_CPY KC_COPY
 #define U_CUT KC_CUT
 #define U_UND KC_UNDO
@@ -36,11 +36,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define LAYER_NAMES BASE, BUTTON, NAV, MOUSE, MEDIA, NUM, SYM, FUN, COMPOSE
 enum layers { LAYER_NAMES };
 const char* const layer_strings[] = {
-    "Base", "Btn", "Nav", "Mouse", "Media", "Num", "Sym", "Fun", "Comp"
+    "Base", "Button", "Nav", "Mouse", "Media", "Num", "Sym", "Fun", "Comp"
 };
 
 enum custom_keycodes {
     ALT_TAB = SAFE_RANGE,
+    U_PST,
     TP_SENSI,
     TP_SENSD,
     //TP_REGDUMP,
@@ -62,7 +63,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [NAV] = LAYOUT_split_3x6_3(
-        QK_RBT,  QK_BOOT,  XXX,      XXX,      XXX,      XXX,  /***/  U_RDO,    U_PST,    U_CPY,    U_CUT,    U_UND,    XXX,
+        XXX,     QK_BOOT,  XXX,      XXX,      XXX,      XXX,  /***/  U_RDO,    U_PST,    U_CPY,    U_CUT,    U_UND,    XXX,
         XXX,     KC_LALT,  KC_LGUI,  KC_LCTL,  KC_LSFT,  XXX,  /***/  KC_LEFT,  KC_DOWN,  KC_UP,    KC_RGHT,  CW_TOGG,  ALT_TAB,
         XXX,     XXX,      KC_ALGR,  XXX,      XXX,      XXX,  /***/  KC_HOME,  KC_PGDN,  KC_PGUP,  KC_END,   KC_INS,   XXX,
                                      XXX,      XXX,      XXX,  /***/  KC_ENT,   KC_BSPC,  KC_DEL
@@ -76,49 +77,62 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [MEDIA] = LAYOUT_split_3x6_3(
-        QK_RBT,  QK_BOOT,  XXX,      XXX,      XXX,      XXX,  /***/  RGB_TOG,  RGB_MOD,  RGB_HUI,  RGB_SAI,  RGB_VAI,   TP_SENSI,
+        XXX,     QK_BOOT,  XXX,      XXX,      XXX,      XXX,  /***/  RGB_TOG,  RGB_MOD,  RGB_HUI,  RGB_SAI,  RGB_VAI,   TP_SENSI,
         XXX,     KC_LALT,  KC_LGUI,  KC_LCTL,  KC_LSFT,  XXX,  /***/  KC_MPRV,  KC_VOLD,  KC_VOLU,  KC_MNXT,  OUT_AUTO,  TP_SENSD,
         XXX,     XXX,      KC_ALGR,  XXX,      XXX,      XXX,  /***/  XXX,      XXX,      XXX,      XXX,      XXX,       TP_RESET,
                                      XXX,      XXX,      XXX,  /***/  KC_MSTP,  KC_MPLY,  KC_MUTE
   ),
 
   [NUM] = LAYOUT_split_3x6_3(
-        ___,  KC_LBRC,  KC_7,  KC_8,    KC_9,  KC_RBRC,  /***/  XXX,  XXX,      XXX,      XXX,      QK_BOOT,  QK_RBT,
+        ___,  KC_LBRC,  KC_7,  KC_8,    KC_9,  KC_RBRC,  /***/  XXX,  XXX,      XXX,      XXX,      QK_BOOT,  XXX,
         ___,  KC_MINS,  KC_4,  KC_5,    KC_6,  KC_PLUS,  /***/  XXX,  KC_LSFT,  KC_LCTL,  KC_LGUI,  KC_LALT,  XXX,
         ___,  KC_GRV,   KC_1,  KC_2,    KC_3,  KC_ASTR,  /***/  XXX,  XXX,      XXX,      KC_ALGR,  KC_SLSH,  XXX,
                                KC_DOT,  KC_0,  KC_COMM,  /***/  XXX,  XXX,      XXX
   ),
 
   [SYM] = LAYOUT_split_3x6_3(
-        XXX,  KC_LCBR,  KC_AMPR,  KC_ASTR,  KC_LPRN,  KC_RCBR,  /***/  XXX,  XXX,      XXX,      XXX,      QK_BOOT,  QK_RBT,
-        XXX,  KC_COLN,  KC_DLR,   KC_PERC,  KC_CIRC,  KC_PLUS,  /***/  XXX,  KC_LSFT,  KC_LCTL,  KC_LGUI,  KC_LALT,  XXX,
-        XXX,  KC_TILD,  KC_EXLM,  KC_AT,    KC_HASH,  KC_PIPE,  /***/  XXX,  XXX,      XXX,      KC_ALGR,  XXX,      XXX,
+        ___,  KC_LCBR,  KC_AMPR,  KC_ASTR,  KC_LPRN,  KC_RCBR,  /***/  XXX,  XXX,      XXX,      XXX,      QK_BOOT,  XXX,
+        ___,  KC_COLN,  KC_DLR,   KC_PERC,  KC_CIRC,  KC_PLUS,  /***/  XXX,  KC_LSFT,  KC_LCTL,  KC_LGUI,  KC_LALT,  XXX,
+        ___,  KC_TILD,  KC_EXLM,  KC_AT,    KC_HASH,  KC_PIPE,  /***/  XXX,  XXX,      XXX,      KC_ALGR,  XXX,      XXX,
                                   KC_LPRN,  KC_RPRN,  KC_UNDS,  /***/  XXX,  XXX,      XXX
   ),
 
   [FUN] = LAYOUT_split_3x6_3(
-        XXX,  KC_F12,  KC_F7,  KC_F8,   KC_F9,   KC_PSCR,  /***/  XXX,  XXX,      XXX,      XXX,      QK_BOOT,  QK_RBT,
+        XXX,  KC_F12,  KC_F7,  KC_F8,   KC_F9,   KC_PSCR,  /***/  XXX,  XXX,      XXX,      XXX,      QK_BOOT,  XXX,
         XXX,  KC_F11,  KC_F4,  KC_F5,   KC_F6,   KC_SCRL,  /***/  XXX,  KC_LSFT,  KC_LCTL,  KC_LGUI,  KC_LALT,  XXX,
         XXX,  KC_F10,  KC_F1,  KC_F2,   KC_F3,   KC_PAUS,  /***/  XXX,  XXX,      XXX,      KC_ALGR,  XXX,      XXX,
                                KC_APP,  KC_SPC,  KC_TAB,   /***/  XXX,  XXX,      XXX
   ),
 
   [BUTTON] = LAYOUT_split_3x6_3(
-        XXX,  U_UND,    U_CUT,    U_CPY,    U_PST,    /***/  U_RDO,    U_RDO,    U_PST,    U_CPY,    U_CUT,    U_UND,    XXX,
-        XXX,  KC_LALT,  KC_LGUI,  KC_LCTL,  KC_LSFT,  /***/  KC_NO,    KC_NO,    KC_LSFT,  KC_LCTL,  KC_LGUI,  KC_LALT,  XXX,
-        XXX,  U_UND,    U_CUT,    U_CPY,    U_PST,    /***/  U_RDO,    U_RDO,    U_PST,    U_CPY,    U_CUT,    U_UND,    XXX,
-                        KC_BTN2,  KC_BTN3,  KC_BTN1,  /***/  KC_BTN1,  KC_BTN3,  KC_BTN2
+        XXX,  XXX,  XXX,  XXX,      XXX,      XXX,      /***/  XXX,  XXX,      XXX,      XXX,      QK_BOOT,  XXX,
+        XXX,  XXX,  XXX,  DM_REC1,  DM_REC2,  XXX,      /***/  XXX,  KC_LSFT,  KC_LCTL,  KC_LGUI,  KC_LALT,  XXX,
+        XXX,  XXX,  XXX,  XXX,      XXX,      XXX,      /***/  XXX,  XXX,      XXX,      KC_ALGR,  XXX,      XXX,
+                          XXX,      DM_PLY1,  DM_PLY2,  /***/  XXX,  XXX,      XXX
   ),
 
   [COMPOSE] = LAYOUT_split_3x6_3(
-        QK_RBT,  QK_BOOT,  XXX,      XXX,      XXX,      XXX,  /***/  XXX,     XXX,      XXX,    XXX,  XXX,             COMPOSE_ARING,
-        XXX,     KC_LALT,  KC_LGUI,  KC_LCTL,  KC_LSFT,  XXX,  /***/  XXX,     XXX,      XXX,    XXX,  COMPOSE_OSLASH,  COMPOSE_AE,
-        XXX,     XXX,      KC_ALGR,  XXX,      XXX,      XXX,  /***/  XXX,     XXX,      XXX,    XXX,  XXX,             XXX,
-                                     XXX,      XXX,      XXX,  /***/  KC_ENT,  KC_BSPC,  KC_DEL
+        XXX,  QK_BOOT,  XXX,      XXX,      XXX,      XXX,  /***/  XXX,     XXX,      XXX,    XXX,  XXX,             COMPOSE_ARING,
+        XXX,  KC_LALT,  KC_LGUI,  KC_LCTL,  KC_LSFT,  XXX,  /***/  XXX,     XXX,      XXX,    XXX,  COMPOSE_OSLASH,  COMPOSE_AE,
+        XXX,  XXX,      KC_ALGR,  XXX,      XXX,      XXX,  /***/  XXX,     XXX,      XXX,    XXX,  XXX,             XXX,
+                                  XXX,      XXX,      XXX,  /***/  KC_ENT,  KC_BSPC,  KC_DEL
   )
 };
 
-uint8_t tpsens = 0x64;
+uint8_t tpsens = 90;
+
+static uint8_t dynamic_rec = 0;
+
+#ifdef DYNAMIC_MACRO_ENABLE
+#define DYNAMIC_MACRO_CURRENT_SLOT() (direction > 0 ? 1 : 2)
+void dynamic_macro_record_start_user(int8_t direction) {
+    dynamic_rec = DYNAMIC_MACRO_CURRENT_SLOT();
+}
+
+void dynamic_macro_record_end_user(int8_t direction) {
+    dynamic_rec = 0;
+}
+#endif
 
 #ifdef OLED_ENABLE
 const char keycode_to_char(uint16_t keycode) {
@@ -132,32 +146,32 @@ const char keycode_to_char(uint16_t keycode) {
         // Basic:
         case KC_NO: return ' ';
         case KC_TRANSPARENT: return ' ';
-        case KC_A: return 'a';
-        case KC_B: return 'b';
-        case KC_C: return 'c';
-        case KC_D: return 'd';
-        case KC_E: return 'e';
-        case KC_F: return 'f';
-        case KC_G: return 'g';
-        case KC_H: return 'h';
-        case KC_I: return 'i';
-        case KC_J: return 'j';
-        case KC_K: return 'k';
-        case KC_L: return 'l';
-        case KC_M: return 'm';
-        case KC_N: return 'n';
-        case KC_O: return 'o';
-        case KC_P: return 'p';
-        case KC_Q: return 'q';
-        case KC_R: return 'r';
-        case KC_S: return 's';
-        case KC_T: return 't';
-        case KC_U: return 'u';
-        case KC_V: return 'v';
-        case KC_W: return 'w';
-        case KC_X: return 'x';
-        case KC_Y: return 'y';
-        case KC_Z: return 'z';
+        case KC_A: return 'A';
+        case KC_B: return 'B';
+        case KC_C: return 'C';
+        case KC_D: return 'D';
+        case KC_E: return 'E';
+        case KC_F: return 'F';
+        case KC_G: return 'G';
+        case KC_H: return 'H';
+        case KC_I: return 'I';
+        case KC_J: return 'J';
+        case KC_K: return 'K';
+        case KC_L: return 'L';
+        case KC_M: return 'M';
+        case KC_N: return 'N';
+        case KC_O: return 'O';
+        case KC_P: return 'P';
+        case KC_Q: return 'Q';
+        case KC_R: return 'R';
+        case KC_S: return 'S';
+        case KC_T: return 'T';
+        case KC_U: return 'U';
+        case KC_V: return 'V';
+        case KC_W: return 'W';
+        case KC_X: return 'X';
+        case KC_Y: return 'Y';
+        case KC_Z: return 'Z';
         case KC_1: return '1';
         case KC_2: return '2';
         case KC_3: return '3';
@@ -186,18 +200,18 @@ const char keycode_to_char(uint16_t keycode) {
         case KC_DOT: return '.';
         case KC_SLASH: return '/';
         case KC_CAPS_LOCK: return 145;
-        case KC_F1: return 131;
-        case KC_F2: return 132;
-        case KC_F3: return 133;
-        case KC_F4: return 134;
-        case KC_F5: return 135;
-        case KC_F6: return 136;
-        case KC_F7: return 137;
-        case KC_F8: return 138;
-        case KC_F9: return 139;
-        case KC_F10: return 140;
-        case KC_F11: return 131;
-        case KC_F12: return 132;
+        case KC_F1: return '1';
+        case KC_F2: return '2';
+        case KC_F3: return '3';
+        case KC_F4: return '4';
+        case KC_F5: return '5';
+        case KC_F6: return '6';
+        case KC_F7: return '7';
+        case KC_F8: return '8';
+        case KC_F9: return '9';
+        case KC_F10: return '0';
+        case KC_F11: return '1';
+        case KC_F12: return '2';
         case KC_PRINT_SCREEN: return 171;
         case KC_SCROLL_LOCK: return 168;
         case KC_PAUSE: return 169;
@@ -324,9 +338,17 @@ const char keycode_to_char(uint16_t keycode) {
         case QK_RBT: return 170;
         case CW_TOGG: return 168;
 
+        // Dynamic macros
+        case DM_REC1: return 141;
+        case DM_REC2: return 142;
+        case DM_PLY1: return 143;
+        case DM_PLY2: return 144;
+
         // Custom keycodes
         case ALT_TAB:
             return 0x12;
+        case U_PST:
+            return 172;
         case TP_SENSI:
             return '+';
         case TP_SENSD:
@@ -396,11 +418,16 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 void oled_render_layer_state(void) {
     static unsigned int prev_layer = -1;
     static uint8_t prev_tpsens = 0;
+    static bool prev_caps_word = false;
+    static bool prev_dynamic_rec = 0;
 
     unsigned int layer = get_highest_layer(layer_state);
-    if (layer == prev_layer && tpsens == prev_tpsens)
+    bool caps_word = is_caps_word_on();
+    if (layer == prev_layer && tpsens == prev_tpsens && prev_caps_word == caps_word && prev_dynamic_rec == dynamic_rec)
         return;
     prev_layer = layer;
+    prev_caps_word = caps_word;
+    prev_dynamic_rec = dynamic_rec;
     print("Layer: ");
     print_dec(layer);
     print("\n");
@@ -446,6 +473,23 @@ void oled_render_layer_state(void) {
             prev_tpsens = tpsens;
             snprintf(buf, sizeof(buf), "TP:%d", tpsens);
             oled_write_ln(buf, false);
+        } else {
+            oled_advance_page(true);
+        }
+
+        if (caps_word) {
+            oled_write_char(keycode_to_char(CW_TOGG), false);
+        }
+
+        switch (dynamic_rec) {
+            case 1:
+                oled_write_char(141, false);
+                break;
+            case 2:
+                oled_write_char(142, false);
+                break;
+            default:
+                break;
         }
     }
 }
@@ -535,6 +579,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case ALT_TAB:
             SEND_STRING(SS_DOWN(X_LALT) SS_TAP(X_TAB) SS_UP(X_LALT));
+            break;
+        case U_PST:
+            SEND_STRING(SS_LSFT(SS_TAP(X_INS)));
             break;
         case TP_SENSI:
             if ((int)tpsens + 5 > 0xff)
