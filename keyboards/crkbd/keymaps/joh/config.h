@@ -57,6 +57,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
 
+#ifdef RGB_MATRIX_ENABLE
+#define RGB_MATRIX_KEYPRESSES // reacts to keypresses
+#define RGB_DISABLE_WHEN_USB_SUSPENDED // turn off effects when suspended
+#define RGB_MATRIX_MAXIMUM_BRIGHTNESS 150 // limits maximum brightness of LEDs to 150 out of 255. Higher may cause the controller to crash.
+#define RGB_MATRIX_HUE_STEP 8
+#define RGB_MATRIX_SAT_STEP 8
+#define RGB_MATRIX_VAL_STEP 8
+#define RGB_MATRIX_SPD_STEP 10
+#endif
+
 #ifdef RGBLIGHT_ENABLE
     #define RGBLIGHT_EFFECT_BREATHING
     #define RGBLIGHT_EFFECT_RAINBOW_MOOD
