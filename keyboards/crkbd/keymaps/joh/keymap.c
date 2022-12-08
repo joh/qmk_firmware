@@ -77,9 +77,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [MEDIA] = LAYOUT_split_3x6_3(
-        XXX,     QK_BOOT,  XXX,      XXX,      XXX,      XXX,  /***/  RGB_TOG,  RGB_MOD,  RGB_HUI,  RGB_SAI,  RGB_VAI,   TP_SENSI,
-        XXX,     KC_LALT,  KC_LGUI,  KC_LCTL,  KC_LSFT,  XXX,  /***/  KC_MPRV,  KC_VOLD,  KC_VOLU,  KC_MNXT,  OU_AUTO,  TP_SENSD,
-        XXX,     XXX,      KC_ALGR,  XXX,      XXX,      XXX,  /***/  XXX,      XXX,      XXX,      XXX,      XXX,       TP_RESET,
+        XXX,     QK_BOOT,  XXX,      XXX,      XXX,      XXX,  /***/  RGB_TOG,  RGB_MOD,  RGB_HUI,  RGB_SAI,  RGB_VAI,  XXX,
+        XXX,     KC_LALT,  KC_LGUI,  KC_LCTL,  KC_LSFT,  XXX,  /***/  KC_MPRV,  KC_VOLD,  KC_VOLU,  KC_MNXT,  OU_AUTO,  XXX,
+        XXX,     XXX,      KC_ALGR,  XXX,      XXX,      XXX,  /***/  XXX,      XXX,      XXX,      XXX,      XXX,      XXX,
                                      XXX,      XXX,      XXX,  /***/  KC_MSTP,  KC_MPLY,  KC_MUTE
   ),
 
@@ -105,10 +105,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [BUTTON] = LAYOUT_split_3x6_3(
-        XXX,  XXX,  XXX,  XXX,      XXX,      XXX,      /***/  XXX,  XXX,      XXX,      XXX,      QK_BOOT,  XXX,
-        XXX,  XXX,  XXX,  DM_REC1,  DM_REC2,  XXX,      /***/  XXX,  KC_LSFT,  KC_LCTL,  KC_LGUI,  KC_LALT,  XXX,
-        XXX,  XXX,  XXX,  XXX,      XXX,      XXX,      /***/  XXX,  XXX,      XXX,      KC_ALGR,  XXX,      XXX,
-                          XXX,      DM_PLY1,  DM_PLY2,  /***/  XXX,  XXX,      XXX
+        XXX,  TP_RESET,  XXX,  XXX,      XXX,      XXX,      /***/  XXX,  XXX,      XXX,      XXX,      QK_BOOT,  XXX,
+        XXX,  TP_SENSI,  XXX,  DM_REC1,  DM_REC2,  XXX,      /***/  XXX,  KC_LSFT,  KC_LCTL,  KC_LGUI,  KC_LALT,  XXX,
+        XXX,  TP_SENSD,  XXX,  XXX,      XXX,      XXX,      /***/  XXX,  XXX,      XXX,      KC_ALGR,  XXX,      XXX,
+                               XXX,      DM_PLY1,  DM_PLY2,  /***/  XXX,  XXX,      XXX
   ),
 
   [COMPOSE] = LAYOUT_split_3x6_3(
@@ -382,22 +382,8 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
                               (keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX))
 
 void oled_render_layer_state(void) {
-    static unsigned int prev_layer = -1;
-    static uint8_t prev_tpsens = 0;
-    static bool prev_caps_word = false;
-    static bool prev_dynamic_rec = 0;
-
     unsigned int layer = get_highest_layer(layer_state);
     bool caps_word = is_caps_word_on();
-    if (layer == prev_layer &&
-        trackpoint_sensitivity == prev_tpsens &&
-        caps_word == prev_caps_word &&
-        dynamic_rec == prev_dynamic_rec)
-        return;
-
-    prev_layer = layer;
-    prev_caps_word = caps_word;
-    prev_dynamic_rec = dynamic_rec;
 
     oled_write_ln(layer_strings[layer], false);
     oled_advance_page(true);
@@ -423,35 +409,34 @@ void oled_render_layer_state(void) {
             }
             oled_advance_page(true);
         }
+    }
 
+    oled_advance_page(true);
+
+    if (layer == BUTTON || layer == MOUSE) {
+        char buf[32];
+        snprintf(buf, sizeof(buf), "TP: %d", trackpoint_sensitivity);
+        oled_write_ln(buf, false);
+    } else {
         oled_advance_page(true);
+    }
 
-        if (prev_tpsens != trackpoint_sensitivity || layer == MOUSE) {
-            char buf[32];
-            prev_tpsens = trackpoint_sensitivity;
-            snprintf(buf, sizeof(buf), "TP:%d", trackpoint_sensitivity);
-            oled_write_ln(buf, false);
-        } else {
-            oled_advance_page(true);
-        }
+    if (caps_word) {
+        oled_write_char(keycode_to_char(CW_TOGG), false);
+    } else {
+        oled_write_char(' ', false);
+    }
 
-        if (caps_word) {
-            oled_write_char(keycode_to_char(CW_TOGG), false);
-        } else {
+    switch (dynamic_rec) {
+        case 1:
+            oled_write_char(keycode_to_char(DM_REC1), false);
+            break;
+        case 2:
+            oled_write_char(keycode_to_char(DM_REC2), false);
+            break;
+        default:
             oled_write_char(' ', false);
-        }
-
-        switch (dynamic_rec) {
-            case 1:
-                oled_write_char(keycode_to_char(DM_REC1), false);
-                break;
-            case 2:
-                oled_write_char(keycode_to_char(DM_REC2), false);
-                break;
-            default:
-                oled_write_char(' ', false);
-                break;
-        }
+            break;
     }
 }
 
