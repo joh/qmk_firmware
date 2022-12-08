@@ -42,6 +42,7 @@ const char* const layer_strings[] = {
 enum custom_keycodes {
     ALT_TAB = SAFE_RANGE,
     U_PST,
+    COMM_SPC,
     TP_SENSI,
     TP_SENSD,
     //TP_REGDUMP,
@@ -87,7 +88,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         ___,  KC_LBRC,  KC_7,  KC_8,    KC_9,  KC_RBRC,  /***/  XXX,  XXX,      XXX,      XXX,      QK_BOOT,  XXX,
         ___,  KC_MINS,  KC_4,  KC_5,    KC_6,  KC_PLUS,  /***/  XXX,  KC_LSFT,  KC_LCTL,  KC_LGUI,  KC_LALT,  XXX,
         ___,  KC_GRV,   KC_1,  KC_2,    KC_3,  KC_ASTR,  /***/  XXX,  XXX,      XXX,      KC_ALGR,  KC_SLSH,  XXX,
-                               KC_DOT,  KC_0,  KC_COMM,  /***/  XXX,  XXX,      XXX
+                               KC_DOT,  KC_0,  COMM_SPC, /***/  XXX,  XXX,      XXX
   ),
 
   [SYM] = LAYOUT_split_3x6_3(
@@ -351,6 +352,8 @@ const char keycode_to_char(uint16_t keycode) {
             return 0x12;
         case U_PST:
             return 172;
+        case COMM_SPC:
+            return ',';
         case TP_SENSI:
             return '+';
         case TP_SENSD:
@@ -559,6 +562,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
         case U_PST:
             SEND_STRING(SS_LSFT(SS_TAP(X_INS)));
+            break;
+        case COMM_SPC:
+            SEND_STRING(", ");
             break;
 #ifdef PS2_MOUSE_ENABLE
         case TP_SENSI:
