@@ -85,17 +85,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [NUM] = LAYOUT_split_3x6_3(
-        ___,  KC_LBRC,  KC_7,  KC_8,    KC_9,  KC_RBRC,  /***/  XXX,  XXX,      XXX,      XXX,      QK_BOOT,  XXX,
-        ___,  KC_MINS,  KC_4,  KC_5,    KC_6,  KC_PLUS,  /***/  XXX,  KC_LSFT,  KC_LCTL,  KC_LGUI,  KC_LALT,  XXX,
-        ___,  KC_GRV,   KC_1,  KC_2,    KC_3,  KC_ASTR,  /***/  XXX,  XXX,      XXX,      KC_ALGR,  KC_SLSH,  XXX,
-                               KC_DOT,  KC_0,  COMM_SPC, /***/  XXX,  XXX,      XXX
+        ___,      KC_LBRC,  KC_7,  KC_8,    KC_9,  KC_RBRC,  /***/  XXX,  XXX,      XXX,      XXX,      QK_BOOT,  XXX,
+        KC_PERC,  KC_MINS,  KC_4,  KC_5,    KC_6,  KC_PLUS,  /***/  XXX,  KC_LSFT,  KC_LCTL,  KC_LGUI,  KC_LALT,  XXX,
+        ___,      KC_SLSH,  KC_1,  KC_2,    KC_3,  KC_ASTR,  /***/  XXX,  XXX,      XXX,      KC_ALGR,  KC_SLSH,  XXX,
+                                   KC_DOT,  KC_0,  COMM_SPC, /***/  XXX,  XXX,      XXX
   ),
 
   [SYM] = LAYOUT_split_3x6_3(
-        ___,  KC_LCBR,  KC_AMPR,  KC_ASTR,  KC_LPRN,  KC_RCBR,  /***/  XXX,  XXX,      XXX,      XXX,      QK_BOOT,  XXX,
-        ___,  KC_COLN,  KC_DLR,   KC_PERC,  KC_CIRC,  KC_PLUS,  /***/  XXX,  KC_LSFT,  KC_LCTL,  KC_LGUI,  KC_LALT,  XXX,
-        ___,  KC_TILD,  KC_EXLM,  KC_AT,    KC_HASH,  KC_PIPE,  /***/  XXX,  XXX,      XXX,      KC_ALGR,  XXX,      XXX,
-                                  KC_LPRN,  KC_RPRN,  KC_UNDS,  /***/  XXX,  XXX,      XXX
+        KC_GRV,   KC_DLR,   KC_EXLM,  KC_LBRC,  KC_RBRC,  KC_PIPE,  /***/  XXX,  XXX,      XXX,      XXX,      QK_BOOT,  XXX,
+        KC_PERC,  KC_MINS,  KC_PLUS,  KC_LPRN,  KC_RPRN,  KC_AMPR,  /***/  XXX,  KC_LSFT,  KC_LCTL,  KC_LGUI,  KC_LALT,  XXX,
+        ___,      KC_SLSH,  KC_ASTR,  KC_LABK,  KC_RABK,  KC_CIRC,  /***/  XXX,  XXX,      XXX,      KC_ALGR,  XXX,      XXX,
+                                        KC_AT,  KC_EQL,   KC_TILD,  /***/  XXX,  XXX,      XXX
   ),
 
   [FUN] = LAYOUT_split_3x6_3(
