@@ -1,4 +1,5 @@
 # Sparkfun Pro Micro RP2040 MCU settings
+PLATFORM_KEY := chibios
 MCU := RP2040
 BOARD := QMK_PM2040
 BOOTLOADER := rp2040
