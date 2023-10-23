@@ -14,8 +14,9 @@ EXTRAKEY_ENABLE = yes # Audio control and System control
 AUTO_SHIFT_ENABLE = yes # Auto Shift
 CAPS_WORD_ENABLE = yes
 RGB_MATRIX_ENABLE = yes
+RGBLIGHT_ENABLE = no
 OLED_ENABLE     = yes
-OLED_DRIVER     = SSD1306
+OLED_DRIVER     = ssd1306
 LTO_ENABLE      = yes
 
 SPACE_CADET_ENABLE = no

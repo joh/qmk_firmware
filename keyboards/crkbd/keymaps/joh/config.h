@@ -32,9 +32,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #undef TAPPING_TERM
 #define TAPPING_TERM 175
 
-// Prevent normal rollover on alphas from accidentally triggering mods.
-#define IGNORE_MOD_TAP_INTERRUPT
-
 // Enable rapid switch from tap to hold, disables double tap hold auto-repeat.
 #define QUICK_TAP_TERM 0
 
@@ -82,17 +79,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //#define OLED_FONT_WIDTH 5
 #define OLED_FONT_H "keyboards/crkbd/keymaps/joh/glcdfont.c"
 
-#define OLED_DISPLAY_CUSTOM
-#define OLED_DISPLAY_WIDTH 64
-#define OLED_DISPLAY_HEIGHT 128
-#define OLED_COM_PIN_OFFSET 32
-#define OLED_MATRIX_SIZE (OLED_DISPLAY_HEIGHT / 8 * OLED_DISPLAY_WIDTH)
-#define OLED_BLOCK_TYPE uint16_t
-#define OLED_SOURCE_MAP { 0, 8, 16, 24, 32, 40, 48, 56 }
-#define OLED_TARGET_MAP { 56, 48, 40, 32, 24, 16, 8, 0 }
-#define OLED_BLOCK_COUNT (sizeof(OLED_BLOCK_TYPE) * 8)
-#define OLED_BLOCK_SIZE (OLED_MATRIX_SIZE / OLED_BLOCK_COUNT)
-#define OLED_COM_PINS COM_PINS_ALT
+#define OLED_DISPLAY_64X128
 #define OLED_IC OLED_IC_SH1107
 
 #define SPLIT_LAYER_STATE_ENABLE
